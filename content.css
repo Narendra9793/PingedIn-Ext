@@ -1,0 +1,26 @@
+#my_label {
+  position: relative; /* necessary parent for absolutely positioned children */
+}
+
+#my_label::before {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  width: 14px !important;
+  height: 14px !important;
+  transform :translate(68%, -85%) !important;
+
+}
+
+#my_label::after {
+  content: "";
+  position: absolute;
+  z-index: 9; /* higher than before */
+  width: 14px !important;
+  height: 14px !important;
+  transform: scale(0.5)!important;
+  transform :translate(40%, -120%) !important;
+  font-size: 5px !important;
+}
+
+
