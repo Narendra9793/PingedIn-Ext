@@ -1,6 +1,6 @@
 {
   "name": "PingedIn",
-  "description": "AI powered chrome extention for LinkedIn, take referrals, follow ups and reply smartly and quickly. ",
+  "description": "AI-powered LinkedIn extension for crafting smart replies, scheduling follow-ups, and generating personalized referrals.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["activeTab", "storage"],

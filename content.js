@@ -16,6 +16,7 @@ let isReplyButtonPressed=false;
 let isFollowUpButtonPressed=false;
 let isReferralButtonPressed=false;
 let isWaiting=false;
+let isDarkMode;
 
 function handleWaitmethod(){
     const gButton=document.getElementById('pingedIn-ai-generate-button');
@@ -286,8 +287,15 @@ function createJobIDBox(){
     JobIDBoxText.style.minHeight = "40px"; 
     JobIDBoxText.style.width = "100%";
 
-    JobIDBoxText.style.backgroundColor = "#364548";       // white or any other
-    JobIDBoxText.style.color = "#fff";                 // darker text
+
+    if(!isDarkMode){
+        JobIDBoxText.style.backgroundColor = "#f3f2ee"; 
+        JobIDBoxText.style.color = "black";
+    }
+    else{
+        JobIDBoxText.style.backgroundColor = "#364548";       // white or any other
+        JobIDBoxText.style.color = "#fff"; 
+    }
     JobIDBoxText.style.fontFamily = "Arial, sans-serif";
     JobIDBoxText.style.fontWeight = "400";
     JobIDBoxText.style.fontSize = "14px";
@@ -322,9 +330,15 @@ function createJobDescriptionBox(){
     
     
 
+    if(!isDarkMode){
+        JobDescriptionBoxText.style.backgroundColor = "#f3f2ee"; 
+        JobDescriptionBoxText.style.color = "black";
+    }
+    else{
+        JobDescriptionBoxText.style.backgroundColor = "#364548";       // white or any other
+        JobDescriptionBoxText.style.color = "#fff"; 
+    }
 
-    JobDescriptionBoxText.style.backgroundColor = "#364548";       // white or any other
-    JobDescriptionBoxText.style.color = "#fff";                 // darker text
     JobDescriptionBoxText.style.fontFamily = "Arial, sans-serif";
     JobDescriptionBoxText.style.fontWeight = "200";
     JobDescriptionBoxText.style.fontSize = "14px";
@@ -720,52 +734,43 @@ const createAiFollowUpbutton = () => {
 
 } 
 const createAiReferralbutton = () => {
-    // Check if the button already exists
-    if (document.getElementById("pingedIn-ai-Referral-button")) return;
+    let existingBtn = document.getElementById("pingedIn-ai-Referral-button");
+    if (existingBtn) return existingBtn; // ✅ return existing button instead of undefined
 
-    // Create button
     const aiReferralButton = document.createElement("button");
     aiReferralButton.id = "pingedIn-ai-Referral-button";
-    aiReferralButton.className = "msg-form__footer-action artdeco-button artdeco-button--tertiary artdeco-button--circle artdeco-button--muted m0 artdeco-button--1 artdeco-button--circle";
-    aiReferralButton.style.width='60px';
-    aiReferralButton.style.padding='10px 10px';
-    aiReferralButton.setAttribute("type", "button");
-    aiReferralButton.setAttribute("title", "Generate Referral with AI.");
+    aiReferralButton.className =
+        "msg-form__footer-action artdeco-button artdeco-button--tertiary artdeco-button--circle artdeco-button--muted m0 artdeco-button--1 artdeco-button--circle";
+    aiReferralButton.style.width = "60px";
+    aiReferralButton.style.padding = "10px";
+    aiReferralButton.type = "button";
+    aiReferralButton.title = "Generate Referral with AI.";
     aiReferralButton.setAttribute("aria-label", "Generate Referral with AI.");
 
-    // Create SVG icon
     const svgNS = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("role", "button");
-    svg.setAttribute("aria-hidden", "true");
     svg.setAttribute("class", "artdeco-button__icon");
     svg.setAttribute("xmlns", svgNS);
     svg.setAttribute("width", "50");
     svg.setAttribute("height", "32");
     svg.setAttribute("viewBox", "0 0 24 24");
 
-
-
     const text = document.createElementNS(svgNS, "text");
-    text.setAttribute("x", "-1");
-    text.setAttribute("y", "15");
+    text.setAttribute("x", "-2");
+    text.setAttribute("y", "16");
     text.setAttribute("fill", "#FFFFFFBF");
     text.setAttribute("font-size", "8");
-    text.textContent = "Referral";
     text.setAttribute("font-family", "Helvetica, Arial, sans-serif");
+    text.textContent = "Referral";
 
     svg.appendChild(text);
-    document.body.appendChild(svg);
-
-    // Append icon and text to button
     aiReferralButton.appendChild(svg);
-    aiReferralButton.style.marginLeft='15px'
-    
+    aiReferralButton.style.marginLeft = "15px";
+
+    return aiReferralButton;
+};
 
 
-    return aiReferralButton
-
-} 
 const createGeneratebutton = () => {
     // Check if the button already exists
     if (document.getElementById("pingedIn-ai-generate-button")) return;
@@ -823,11 +828,17 @@ const injectButton = () => {
         }
     });
 
-    msgFormLeftpanel.insertBefore(aiReplyButton, msgFormLeftpanel.lastChild);
-    msgFormLeftpanel.insertBefore(aiFollowUpButton, msgFormLeftpanel.lastChild);
-    msgFormLeftpanel.insertBefore(aiReferralButton, msgFormLeftpanel.lastChild);
-
+    if (aiReplyButton) {
+        msgFormLeftpanel.insertBefore(aiReplyButton, msgFormLeftpanel.lastChild);
+    }
+    if (aiFollowUpButton) {
+        msgFormLeftpanel.insertBefore(aiFollowUpButton, msgFormLeftpanel.lastChild);
+    }
+    if (aiReferralButton) {
+        msgFormLeftpanel.insertBefore(aiReferralButton, msgFormLeftpanel.lastChild);
+    }
     
+    applyTheme();
 
 };
 
@@ -858,6 +869,60 @@ observer.observe(document.body, {
   childList: true,
   subtree: true
 });
+
+
+function applyTheme() {
+    console.log("in applyTheme")
+  const html = document.documentElement;
+  isDarkMode =  html.classList.contains("theme--dark") || html.classList.contains("theme--dark-lix");
+  console.log("System has darkmode?", isDarkMode)
+
+  const aiReplybuttontext = document.getElementById("pingedIn-ai-reply-button").querySelectorAll("svg text"); 
+  const aiFollowUpbuttontext = document.getElementById("pingedIn-ai-follow-up-button").querySelectorAll("svg text"); 
+  const aiReferralbuttontext = document.getElementById("pingedIn-ai-Referral-button").querySelectorAll("svg text"); 
+
+  const JobIDBoxText = document.getElementById("JobIDBoxText"); 
+  const JobDescriptionBoxText = document.getElementById("JobDescriptionBoxText"); 
+
+
+  if (aiReplybuttontext || aiFollowUpbuttontext || aiReferralbuttontext) {
+    if (!isDarkMode) {
+        aiReplybuttontext[0].setAttribute("fill", "black");
+        aiFollowUpbuttontext[0].setAttribute("fill", "black");
+        aiReferralbuttontext[0].setAttribute("fill", "black");
+
+        JobDescriptionBoxText.style.backgroundColor = "#f3f2ee"; 
+        JobDescriptionBoxText.style.color = "black";  
+
+        JobIDBoxText.style.backgroundColor = "#f3f2ee";      
+        JobIDBoxText.style.color = "black";  
+
+    } else {
+      aiReplybuttontext[0].setAttribute("fill", "#FFFFFFBF");
+      aiFollowUpbuttontext[0].setAttribute("fill", "#FFFFFFBF");
+      aiReferralbuttontext[0].setAttribute("fill", "#FFFFFFBF");
+
+        JobDescriptionBoxText.style.backgroundColor = "#364548";  
+        JobDescriptionBoxText.style.color = "#fff";  
+
+        JobIDBoxText.style.backgroundColor = "#364548";    
+        JobIDBoxText.style.color = "#fff";  
+    }
+  }
+}
+
+
+
+// Watch for class changes on <html>
+const observer2 = new MutationObserver(() => {
+  applyTheme();
+});
+
+observer2.observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ["class"]
+});
+
 
 
 
