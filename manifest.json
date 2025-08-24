@@ -1,7 +1,7 @@
 {
   "name": "PingedIn",
   "description": "AI-powered LinkedIn extension for crafting smart replies, scheduling follow-ups, and generating personalized referrals.",
-  "version": "1.0",
+  "version": "1.2",
   "manifest_version": 3,
   "permissions": ["activeTab", "storage"],
   "host_permissions": [
